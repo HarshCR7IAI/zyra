@@ -17,31 +17,14 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class LoginTest {
+public class LoginSlackAu extends BaseClass {
 
-    WebDriver driver;
-    WebDriverWait wait;
 
-    @BeforeMethod
-    public void setup() {
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        driver.manage().window().maximize();
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
-
-    @Test
+    @Test (priority = 1)
     public void Login() throws InterruptedException {
 
         // 1. Setup your date and login variables (These stay the same for all channels)
-        String timeLine = "Last 24 Hours";
+        String timeLine = "Custom Range";
         String userName = "admin@example.com";
         String passWord = "admin";
         String startMonth = "December 2025";
@@ -60,22 +43,22 @@ public class LoginTest {
         }
 
         // 3. Log into the application JUST ONCE
-        driver.get("https://auditor.iaisolution.com/login");
-
-        driver.findElement(By.cssSelector("input[type='email']")).sendKeys(userName);
-        driver.findElement(By.xpath("//input[@type='password']")).sendKeys(passWord);
-        driver.findElement(By.xpath("//button[text()='Log in']")).click();
-
-        try {
-            String errorMsg = driver.findElement(By.xpath("//p[text()='Invalid email or password']")).getText();
-            System.out.println("Login Failed : " + errorMsg);
-            return; // stop test if login fails
-        } catch (NoSuchElementException e) {
-            System.out.println("User logged in successfully");
-        }
-        
-        driver.findElement(By.xpath("//button[@aria-label='Integration']")).click();
-        driver.findElement(By.xpath("(//button[normalize-space()='START AUDIT'])[3]")).click();
+//        driver.get("https://auditor.iaisolution.com/login");
+//
+//        driver.findElement(By.cssSelector("input[type='email']")).sendKeys(userName);
+//        driver.findElement(By.xpath("//input[@type='password']")).sendKeys(passWord);
+//        driver.findElement(By.xpath("//button[text()='Log in']")).click();
+//
+//        try {
+//            String errorMsg = driver.findElement(By.xpath("//p[text()='Invalid email or password']")).getText();
+//            System.out.println("Login Failed : " + errorMsg);
+//            return; // stop test if login fails
+//        } catch (NoSuchElementException e) {
+//            System.out.println("User logged in successfully");
+//        }
+//        
+//        driver.findElement(By.xpath("//button[@aria-label='Integration']")).click();
+//        driver.findElement(By.xpath("(//button[normalize-space()='START AUDIT'])[3]")).click();
 
         // 4. Start the loop to go through each channel from the text file
         for (String rawChannel : channelsToAudit) {

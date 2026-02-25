@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Zyra Automation Suite">
+    <test name="Audit and History Tests">
+        <classes>
+            <class name="zyra.BaseClass" />
+            <class name="zyra.LoginSlackAu" />
+            <class name = "zyra.AuditHistory" />
+            
+            </classes>
+    </test>
+</suite>
