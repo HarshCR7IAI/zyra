@@ -3,6 +3,8 @@ package zyra;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -13,7 +15,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.io.FileHandler;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 
 public class BaseClass {
 	
@@ -24,14 +29,19 @@ public class BaseClass {
     
     public static void ScreenShot (String fileName) throws IOException
     {
+	DateTimeFormatter dTF = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+	String timestamp = dTF.format(LocalDateTime.now()); 
+
+	String dynFileName = fileName + " " + timestamp + ".png" ;
     TakesScreenshot ts = (TakesScreenshot) driver ;
     File source = ts.getScreenshotAs(OutputType.FILE);
-    File destination = new File("/home/harshit/git/repository/zyra/ScreenShot/" + fileName + ".png");
+//    File destination = new File("/home/harshit/git/repository/zyra/ScreenShot/" + dynFileName + ".png");
+    File destination = new File("/home/harshit/git/repository/zyra/FullShots/" + dynFileName + ".png");
     FileHandler.copy(source, destination);
     }
     
     
-	@BeforeMethod
+	@BeforeTest
 	public void setup() throws InterruptedException, IOException
 	{
 		
@@ -39,7 +49,7 @@ public class BaseClass {
 		
 		    driver = new ChromeDriver();
 	        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-	        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+	        wait = new WebDriverWait(driver, Duration.ofSeconds(90));
 	        driver.manage().window().maximize();
 	        
 	        
@@ -66,15 +76,15 @@ public class BaseClass {
 	}
 	
 	
-//            @AfterMethod 
-//            public void closeBrowser() throws InterruptedException
-//            {
-//            	if( driver != null)
-//            	{
-//            		Thread.sleep(5000);
-//            		driver.quit();
-//            	}
-//            }
+            @AfterTest 
+            public void closeBrowser() throws InterruptedException
+            {
+            	if( driver != null)
+            	{
+            		Thread.sleep(5000);
+            		driver.quit();
+            	}
+            }
 	
 	
 
