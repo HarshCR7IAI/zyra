@@ -73,11 +73,20 @@ public class LoginSlackAu extends BaseClass {
             System.out.println("Starting audit for channel: " + channelName);
             System.out.println("=========================================");
 
+            String attemptsText = driver.findElement(By.xpath("//span[contains(., 'Page') and contains(., 'of')]")).getText();
+
+            String[] trimattempts = attemptsText.split(" ");
+            String maxPage = trimattempts[3];
+
+            int totalPages = Integer.parseInt(trimattempts[3].trim());
+
+
+
             
 
             // 5. Reset pagination variables for EACH channel
             boolean found = false;
-            int maxPages = 5;
+            int maxPages = totalPages;
             int pageCount = 0;
 
             while (!found && pageCount < maxPages) {
