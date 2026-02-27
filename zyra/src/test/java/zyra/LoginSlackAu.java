@@ -24,7 +24,7 @@ public class LoginSlackAu extends BaseClass {
     public void Login() throws InterruptedException {
 
         // 1. Setup your date and login variables (These stay the same for all channels)
-        String timeLine = "Custom Range";
+        String timeLine = "Last 24 Hours";
         String userName = "admin@example.com";
         String passWord = "admin";
         String startMonth = "December 2025";
