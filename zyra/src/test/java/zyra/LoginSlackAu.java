@@ -159,15 +159,49 @@ public class LoginSlackAu extends BaseClass {
                 driver.findElement(By.xpath("//button[contains(@class,'transition-all active:scale-95')]")).click();
             }
 
-            try {
-                wait.until(ExpectedConditions.textToBePresentInElementLocated(
-                        By.xpath("//div[contains(@class,'Toastify__toast')]"), "Audit completed."));
-                WebElement toast = driver.findElement(
-                        By.xpath("//div[contains(@class,'Toastify__toast') and contains(.,'Audit completed')]"));
-                String Success = toast.getText();
-                System.out.println(channelName + " : " + Success);
+            // try {
+            //     wait.until(ExpectedConditions.textToBePresentInElementLocated(
+            //             By.xpath("//div[contains(@class,'Toastify__toast')]"), "Audit completed."));
+            //     WebElement toast = driver.findElement(
+            //             By.xpath("//div[contains(@class,'Toastify__toast') and contains(.,'Audit completed')]"));
+            //     String Success = toast.getText();
+            //     System.out.println(channelName + " : " + Success);
+            // } catch (Exception e) {
+            //     System.out.println(channelName + " : Audit not completed or toast not found.");
+            // }
+
+           try {
+                // 1. Back to your original, stable logic! 
+                // Because BOTH are 'textToBePresent', Java will compile this .or() perfectly.
+                wait.until(ExpectedConditions.or(
+                    ExpectedConditions.textToBePresentInElementLocated(By.xpath("//div[contains(@class,'Toastify__toast')]"), "Audit completed"),
+                    ExpectedConditions.textToBePresentInElementLocated(By.xpath("//div[contains(@class,'Toastify__toast')]"), "Auditing failed")
+                ));
+
+                // 2. Safely grab ALL toasts in the DOM
+                List<WebElement> allToasts = driver.findElements(By.xpath("//div[contains(@class,'Toastify__toast')]"));
+                String actualVisibleText = "";
+
+                // 3. Find the one that is ACTUALLY visible right now.
+                // Selenium's .getText() is magic here: it returns an empty string ("") for hidden elements!
+                for (WebElement toast : allToasts) {
+                    String text = toast.getText();
+                    if (text.contains("Audit completed") || text.contains("failed")) {
+                        actualVisibleText = text;
+                    }
+                }
+
+                // 4. Print the result and use your continue statement
+                if (actualVisibleText.contains("Audit completed")) {
+                    System.out.println(channelName + " : " + actualVisibleText);
+                } 
+                else if (actualVisibleText.contains("failed")) {
+                    System.out.println(channelName + " : " + actualVisibleText);
+                    continue; // Skip the rest of this channel's loop, move to the next!
+                }
+
             } catch (Exception e) {
-                System.out.println(channelName + " : Audit not completed or toast not found.");
+                System.out.println(channelName + " : Audit timed out or neither toast was found.");
             }
 
             Thread.sleep(5000); // Brief pause before the loop restarts for the next channel
