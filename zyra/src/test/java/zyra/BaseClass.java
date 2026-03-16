@@ -33,7 +33,7 @@ public class BaseClass {
 	String timestamp = dTF.format(LocalDateTime.now()); 
 
 	String dynFileName = fileName + " " + timestamp + ".png" ;
-    TakesScreenshot ts = (TakesScreenshot) driver ;
+     TakesScreenshot ts = (TakesScreenshot) driver ;
     File source = ts.getScreenshotAs(OutputType.FILE);
 //    File destination = new File("/home/harshit/git/repository/zyra/ScreenShot/" + dynFileName + ".png");
     File destination = new File("/home/harshit/git/repository/zyra/FullShots/" + dynFileName + ".png");
@@ -76,15 +76,15 @@ public class BaseClass {
 	}
 	
 	
-            @AfterTest 
-            public void closeBrowser() throws InterruptedException
-            {
-            	if( driver != null)
-            	{
-            		Thread.sleep(5000);
-            		driver.quit();
-            	}
-            }
+            // @AfterTest 
+            // public void closeBrowser() throws InterruptedException
+            // {
+            // 	if( driver != null)
+            // 	{
+            // 		Thread.sleep(5000);
+            // 		driver.quit();
+            // 	}
+            // }
 	
 	
 
